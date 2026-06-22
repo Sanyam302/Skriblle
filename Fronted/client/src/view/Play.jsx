@@ -315,10 +315,7 @@ console.log(
   "play_again",
   () => {
 
-    deleteRoom(
-      socket.roomId
-    );
-
+   
   }
 );
   }}
