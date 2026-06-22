@@ -53,7 +53,7 @@ export function findAvailableRoom() {
     if (
      room.status === "WAITING" ||
 room.status === "COUNTDOWN" &&
-      room.players.length < 20
+      room.players.length < 20 && !room.isPrivate
     ) {
       return room;
     }
