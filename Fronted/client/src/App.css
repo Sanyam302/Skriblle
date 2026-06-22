@@ -1,0 +1,114 @@
+.word-selection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  height: 100%;
+  width: 100%;
+
+  gap: 20px;
+}
+
+.word-selection h2 {
+  font-size: 2rem;
+  color: black;
+}
+
+.word-buttons {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.word-btn {
+  padding: 15px 30px;
+
+  border: none;
+  border-radius: 12px;
+
+  background: #4f46e5;
+  color: white;
+
+  font-size: 1.2rem;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+}
+
+.word-btn:hover {
+  transform: translateY(-3px);
+  background: #6366f1;
+}
+
+.word-btn:active {
+  transform: scale(0.95);
+}
+
+.waiting-screen {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  height: 100%;
+  width: 100%;
+
+  color: black;
+}
+
+.waiting-screen h2 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+.waiting-screen p {
+  font-size: 1.2rem;
+  opacity: 0.8;
+}
+.canvas-area {
+  position: relative;
+  color: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  min-height: 600px;
+}
+
+.game-over-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.winner-popup {
+  background: white;
+  padding: 40px;
+  border-radius: 20px;
+  text-align: center;
+  animation: popIn 0.5s ease;
+}
+
+@keyframes popIn {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+
+  70% {
+    transform: scale(1.1);
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
