@@ -20,6 +20,10 @@ export function createRoom(socketId,username) {
 
     currentWord: null,
     turnsPlayed: 0,
+    isPrivate: false,
+    hostId:"",
+    maxPlayers:20,
+    drawTime:60,
     
     
 

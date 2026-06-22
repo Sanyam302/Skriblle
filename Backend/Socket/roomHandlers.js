@@ -33,7 +33,7 @@ export function assignRoom(io,socket,username) {
   socket.roomId = room.roomId;
   if (
   room.players.length === 2 &&
-  !room.timerStarted
+  !room.timerStarted && !room.isPrivate
 ) {
   room.timerStarted = true;
 
@@ -41,9 +41,7 @@ export function assignRoom(io,socket,username) {
 
   room.status = "COUNTDOWN";
   startRoomTimer(io);
-  console.log(
-    `Timer started for room ${room.roomId}`
-  );
+  
 }
 
   socket.roomId = room.roomId;
@@ -51,8 +49,6 @@ export function assignRoom(io,socket,username) {
   `${socket.id} joined room ${room.roomId}`
 );
 
-console.log(
-  `Players in room: ${room.players.length}`
-);
+
   return room;
 }

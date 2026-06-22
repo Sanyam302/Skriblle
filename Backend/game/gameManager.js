@@ -14,7 +14,7 @@ const words =
   getRandomWords(3);
 
 room.guessedPlayers = [];
-room.timeLeft = 60;
+room.timeLeft = room.drawTime;
 room.currentDrawerId =
   drawer.socketId;
 room.status =
@@ -88,7 +88,9 @@ export function startRoundTimer(io, room) {
 
     room.timeLeft--;
 
-   if (room.timeLeft === 40) {
+   if (room.timeLeft ===  Math.floor(
+    room.drawTime / 2
+  )) {
 
   room.currentHint =
     revealLetter(
@@ -120,7 +122,43 @@ export function startRoundTimer(io, room) {
   );
 }
 
-if (room.timeLeft === 20) {
+if (room.timeLeft ===  Math.floor(
+    room.drawTime / 3
+  )) {
+
+  room.currentHint =
+    revealLetter(
+      room.currentWord,
+      room.currentHint
+    );
+
+  room.players.forEach(
+    (player) => {
+
+      if (
+        player.socketId !==
+        room.currentDrawerId
+      ) {
+
+        io.to(
+          player.socketId
+        ).emit(
+          "word_hint",
+          {
+            hint:
+              room.currentHint
+          }
+        );
+
+      }
+
+    }
+  );
+}
+
+if (room.timeLeft ===  Math.floor(
+    room.drawTime / 2
+  )) {
 
   room.currentHint =
     revealLetter(
@@ -193,14 +231,12 @@ export function endGame(io, room) {
     }
   );
 
-  console.log(
-    `Winner: ${winner.username}`
-  );
+ 
    setTimeout(() => {
 
     deleteRoom(
       room.roomId
     );
 
-  }, 30000); // 30 sec
+  }, 10000); 
 }

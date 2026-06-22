@@ -46,6 +46,9 @@ const sortedPlayers =
       (a, b) =>
         b.score - a.score
     );
+
+    const mode =
+  location.state?.mode;
 useEffect(() => {
 
   const handleGameOver =
@@ -96,27 +99,82 @@ useEffect(() => {
 }, []);
   // Join room
   useEffect(() => {
-     if (
+
+  if (
     !username ||
     joinedRef.current
   ) {
     return;
   }
-  
-  joinedRef.current = true;
-    if (!username) return;
+
+  joinedRef.current =
+    true;
+
+  console.log(
+    "MODE:",
+    mode
+  );
+
+  if (
+    mode ===
+    "join_private_room"
+  ) {
+
+    console.log(
+      "JOIN EVENT"
+    );
 
     socket.emit(
-      "quick_play",
+      "join_private_room",
       {
         username,
+        roomCode:
+          location.state
+            ?.roomCode
       }
     );
+
+    return;
+  }
+
+  if (
+    mode ===
+    "create_private"
+  ) {
+
     console.log(
-  "QUICK PLAY EMITTED",
-  socket.id
-);
-  }, [username]);
+      "CREATE EVENT"
+    );
+
+    socket.emit(
+      "create_private_room",
+      {
+        username,
+        maxPlayers:
+          location.state
+            ?.maxPlayers,
+
+        maxRounds:
+          location.state
+            ?.maxRounds,
+
+        drawTime:
+          location.state
+            ?.drawTime
+      }
+    );
+
+    return;
+  }
+
+  socket.emit(
+    "quick_play",
+    {
+      username
+    }
+  );
+
+}, []);
 
   // Receive room data
   useEffect(() => {
@@ -227,10 +285,7 @@ console.log(
   room?.currentDrawerId
 );
 
-console.log(
-  "SocketId:",
-  socket.id
-);
+
   return (
     <>
     {
@@ -253,9 +308,10 @@ console.log(
         </p>
 
        <button
+       className="play-again-btn"
   onClick={() => {
     navigate("/");
-    socket.on(
+    socket.emit(
   "play_again",
   () => {
 
@@ -278,28 +334,37 @@ console.log(
 }
     <div className="play-page">
 
-      <header className="header">
+     <Header
+  roomId={
+    room?.roomId ||
+    "Loading..."
+  }
+  round={
+    room?.currentRound || 1
+  }
+  maxRounds={
+    room?.maxRounds || 3
+  }
+  timeLeft={
+    room?.timeLeft || 60
+  }
+  word={
+    hint
+  }
 
-        <Header
-          roomId={
-            room?.roomId ||
-            "Loading..."
-          }
-          round={
-            room?.currentRound || 1
-          }
-          maxRounds={
-            room?.maxRounds || 3
-          }
-          timeLeft={
-            room?.timeLeft || 60
-          }
-          word={
-           hint
-          }
-        />
+  isPrivate={
+    room?.isPrivate
+  }
 
-      </header>
+  isHost={
+    room?.hostId ===
+    socket.id
+  }
+
+  roomStatus={
+    room?.status
+  }
+/>
 
       <main className="game-area">
 

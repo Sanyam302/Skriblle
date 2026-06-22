@@ -1,11 +1,16 @@
 import "./Header.css";
+import { socket } from "../socket";
 
 function Header({
-  roomId,
+   roomId,
   round,
   maxRounds,
   timeLeft,
-  word
+  word,
+
+  isPrivate,
+  isHost,
+  roomStatus
 }) {
   return (
     <header className="game-header">
@@ -25,7 +30,27 @@ function Header({
       <div className="header-card word">
         {word}
       </div>
+   {
+  isPrivate &&
+  isHost &&
+  roomStatus ===
+    "LOBBY" && (
 
+   <button
+  className="start-game-btn"
+  onClick={() => {
+
+    socket.emit(
+      "start_private_game"
+    );
+
+  }}
+>
+  Start Game
+</button>
+
+  )
+}
     </header>
   );
 }
