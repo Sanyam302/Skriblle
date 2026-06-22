@@ -148,6 +148,7 @@ const [drawTime, setDrawTime] =
         <div className="room-buttons">
           <button
   onClick={() => {
+    console.log(roomCode)
 
     navigate(
       "/play",

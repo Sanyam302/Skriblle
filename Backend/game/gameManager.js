@@ -231,7 +231,9 @@ export function endGame(io, room) {
     }
   );
 
- 
+  console.log(
+    `Winner: ${winner.username}`
+  );
    setTimeout(() => {
 
     deleteRoom(

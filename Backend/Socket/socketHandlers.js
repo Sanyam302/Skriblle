@@ -17,7 +17,10 @@ export function socketHandler(io) {
 
   io.on("connection", (socket) => {
 
-   
+    console.log(
+      "Connected:",
+      socket.id
+    );
 
     registerDrawingEvents(socket);
     registerChatEvents(io, socket);
@@ -106,7 +109,12 @@ socket.to(room.roomId).emit(
 );
     
 
-   
+    console.log(
+      "Word selected:",
+      word,
+      "in room:",
+      room.roomId
+    );
 
     io.to(room.roomId).emit(
       "room_update",
@@ -169,6 +177,10 @@ socket.on(
 
     room.isPrivate =
       true;
+      room.hostId =
+  socket.id;
+
+      room.status="LOBBY"
 
     rooms.delete(
       oldRoomId
@@ -190,19 +202,16 @@ socket.on(
 
     socket.roomId =
       roomCode;
-    room.hostId =
-  socket.id;
 
-room.isPrivate =
-  true;
-
-room.status =
-  "LOBBY";
     io.emit(
       "room_joined",
       room
     );
-  
+    console.log(
+  "ROOM CREATED:",
+  room.roomId
+);
+
   }
 );
 
@@ -212,7 +221,18 @@ socket.on(
     username,
     roomCode
   }) => {
-     
+     console.log(
+      "JOIN REQUEST RECEIVED"
+    );
+
+    console.log(
+      username
+    );
+
+    console.log(
+      roomCode
+    );
+
     const room =
       rooms.get(
         roomCode
@@ -266,7 +286,18 @@ socket.on(
       "room_joined",
       room
     );
+console.log(
+  "ROOM CODE RECEIVED:",
+  roomCode
+);
 
+console.log(
+  "AVAILABLE ROOMS:",
+  [...rooms.keys()]
+);
+    console.log(
+      `${username} joined ${roomCode}`
+    );
 
   }
 );
@@ -307,7 +338,9 @@ socket.on(
       return;
     }
 
-    
+    console.log(
+      `Private game started in ${room.roomId}`
+    );
 
     startRound(
       io,
@@ -323,7 +356,10 @@ socket.on(
         socket.id
       );
 
-      
+      console.log(
+        "Disconnected:",
+        socket.id
+      );
     });
 
   });

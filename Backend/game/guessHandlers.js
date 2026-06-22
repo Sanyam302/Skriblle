@@ -13,7 +13,15 @@ export function registerGuessHandlers(
   socket.roomId
 );
 
+console.log(
+  "socket.roomId:",
+  socket.roomId
+);
 
+console.log(
+  "room:",
+  room
+);
 
 if (!room) {
   console.log(
@@ -22,7 +30,10 @@ if (!room) {
   return;
 }
 
-
+console.log(
+  "currentWord:",
+  room.currentWord
+);
 
 if (!room.currentWord) {
   console.log(
@@ -93,7 +104,9 @@ if (!room.currentWord) {
             player.score,
         }
       );
- 
+  console.log(
+  "Sending correct guess message"
+);
 
       // Chat message
       io.to(room.roomId).emit(
@@ -131,7 +144,10 @@ if (!room.currentWord) {
     // WRONG GUESS
     // ======================
 
-   
+   console.log(
+  "Sending wrong guess message"
+);
+
 io.to(room.roomId).emit(
   "receive_message",
   {
