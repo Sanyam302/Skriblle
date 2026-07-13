@@ -197,27 +197,34 @@
 
 @media (max-width: 768px) {
   .play-page {
-    height: auto;
-    overflow-y: auto;
+    height: 100vh;
+    padding: 8px;
+    gap: 8px;
+    overflow: hidden;
   }
 
   .game-area {
     display: flex;
     flex-direction: column;
-    height: auto;
-    overflow: visible;
+    gap: 8px;
+    height: calc(100vh - 100px);
+    min-height: 0;
   }
 
   .players {
-    height: 180px;
+    height: 54px;
+    flex-shrink: 0;
   }
 
   .canvas-area {
-    padding: 10px;
+    flex: 1;
+    min-height: 0;
+    padding: 8px;
   }
 
   .chat {
-    height: 350px;
+    height: 160px;
+    flex-shrink: 0;
   }
 }
 

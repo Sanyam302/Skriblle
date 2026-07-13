@@ -74,9 +74,31 @@
   min-width: 0;
 }
 
-.player-icon {
-  font-size: 1.1rem;
+.player-avatar-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   flex-shrink: 0;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.player-avatar-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.crown-badge {
+  position: absolute;
+  top: -8px;
+  left: -8px;
+  font-size: 0.85rem;
+  z-index: 2;
+  transform: rotate(-15deg);
 }
 
 .player-name {
@@ -119,4 +141,61 @@
   background: rgba(99, 102, 241, 0.15);
   border-color: rgba(99, 102, 241, 0.2);
   color: #a5b4fc;
+}
+
+@media (max-width: 768px) {
+  .player-panel {
+    flex-direction: row;
+    align-items: center;
+    height: 54px;
+    padding: 6px 12px;
+    border-radius: var(--border-radius-md);
+    overflow: hidden;
+  }
+  
+  .player-header {
+    border-bottom: none;
+    border-right: 1px solid var(--glass-border);
+    padding: 0 12px 0 0;
+    margin-right: 12px;
+    white-space: nowrap;
+    font-size: 0.65rem;
+    letter-spacing: 1px;
+  }
+  
+  .player-list {
+    flex-direction: row;
+    overflow-x: auto;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    gap: 8px;
+    scrollbar-width: none;
+  }
+  
+  .player-list::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .player-card {
+    min-width: 120px;
+    max-width: 160px;
+    padding: 4px 10px;
+    height: 100%;
+    margin: 0;
+    justify-content: space-between;
+    flex-shrink: 0;
+  }
+  
+  .player-card.active-drawer::before {
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 3px;
+    height: 100%;
+  }
+  
+  .player-status-badge {
+    display: none;
+  }
 }

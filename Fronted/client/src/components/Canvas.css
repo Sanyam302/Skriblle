@@ -150,6 +150,7 @@
   cursor: crosshair;
   box-shadow: var(--glass-shadow);
   display: block;
+  touch-action: none;
 }
 
 .drawing-canvas.disabled {

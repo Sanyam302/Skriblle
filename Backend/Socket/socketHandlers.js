@@ -31,13 +31,14 @@ export function socketHandler(io) {
      
     socket.on(
       "quick_play",
-      ({ username }) => {
+      ({ username, avatarSeed }) => {
 
         const room =
           assignRoom(
             io,
             socket,
-            username
+            username,
+            avatarSeed
           ); 
           if (!room) {
             socket.emit(
@@ -145,7 +146,8 @@ socket.on(
     username,
     maxPlayers,
     maxRounds,
-    drawTime
+    drawTime,
+    avatarSeed
   }) => {
 
     const room =
@@ -188,6 +190,7 @@ socket.on(
     const player={
   socketId: socket.id,
   username: username,
+  avatarSeed: avatarSeed || username,
   score: 0
   }
    room.players.push(player);
@@ -219,7 +222,8 @@ socket.on(
   "join_private_room",
   ({
     username,
-    roomCode
+    roomCode,
+    avatarSeed
   }) => {
      console.log(
       "JOIN REQUEST RECEIVED"
@@ -264,9 +268,8 @@ socket.on(
     room.players.push({
       socketId:
         socket.id,
-
       username,
-
+      avatarSeed: avatarSeed || username,
       score: 0
     });
     room.status="LOBBY"

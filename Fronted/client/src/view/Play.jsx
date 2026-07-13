@@ -12,6 +12,8 @@ import Header from "../components/Header";
 import Player from "../components/Player";
 import Canvas from "../components/Canvas";
 import Chat from "../components/Chat";
+import { createAvatar } from "@dicebear/core";
+import { adventurer } from "@dicebear/collection";
 
 
 export default function Play() {
@@ -431,14 +433,26 @@ console.log(
         {gameOverData.leaderboard && (
           <div className="leaderboard-summary">
             <h3>Final Standings</h3>
-            {gameOverData.leaderboard.slice(0, 5).map((player, idx) => (
-              <div key={player.socketId} className="summary-row">
-                <span>
-                  {idx === 0 ? "👑" : `${idx + 1}.`} {player.username}
-                </span>
-                <span>{player.score} pts</span>
-              </div>
-            ))}
+            {gameOverData.leaderboard.slice(0, 5).map((player, idx) => {
+              const avatarSvg = createAvatar(adventurer, {
+                seed: player.avatarSeed || player.username,
+                size: 24
+              }).toString();
+              return (
+                <div key={player.socketId} className="summary-row">
+                  <span style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                    <span style={{ minWidth: "20px" }}>{idx === 0 ? "👑" : `${idx + 1}.`}</span>
+                    <div 
+                      className="player-avatar-icon" 
+                      style={{ width: "22px", height: "22px" }}
+                      dangerouslySetInnerHTML={{ __html: avatarSvg }} 
+                    />
+                    <span>{player.username}</span>
+                  </span>
+                  <span>{player.score} pts</span>
+                </div>
+              );
+            })}
           </div>
         )}
 

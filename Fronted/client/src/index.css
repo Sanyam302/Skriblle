@@ -20,7 +20,7 @@
   --text-dark: #020617;
 
   /* Estonia-Inspired Transparent Card Theme with Prominent White Highlights */
-  --glass-bg: rgba(10, 10, 16, 0.2);
+  --glass-bg: rgba(10, 10, 16, 0.08);
   --glass-border: rgba(255, 255, 255, 0.16);
   --glass-border-focus: rgba(255, 255, 255, 0.35);
   --glass-shadow: 

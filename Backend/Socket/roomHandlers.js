@@ -6,13 +6,14 @@ import {
 import { startRoomTimer } from "./roomTimer.js";
 
 
-export function assignRoom(io,socket,username) {
+export function assignRoom(io,socket,username,avatarSeed) {
   const socketId = socket.id;
   username = username?username:generateUsername();
   
   const player={
   socketId: socket.id,
   username: username,
+  avatarSeed: avatarSeed || username,
   score: 0
   }
   let room = findAvailableRoom();

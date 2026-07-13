@@ -1,6 +1,8 @@
- import { useState } from "react";
-import {socket }from "../socket";
+import { useState, useMemo } from "react";
+import { socket } from "../socket";
 import { useNavigate } from "react-router-dom";
+import { createAvatar } from "@dicebear/core";
+import { adventurer } from "@dicebear/collection";
 import "../Home.css";
 
 export default function Home() {
@@ -10,6 +12,16 @@ export default function Home() {
   const [drawTime, setDrawTime] = useState(60);
   const [username, setUsername] = useState("");
   const [showCreateModal, setShowCreateModal] = useState(false);
+  const [avatarSeed, setAvatarSeed] = useState(
+    Math.random().toString(36).substring(7)
+  );
+
+  const avatarSvg = useMemo(() => {
+    return createAvatar(adventurer, {
+      seed: avatarSeed,
+      size: 32
+    }).toString();
+  }, [avatarSeed]);
 
   const navigate = useNavigate();
 
@@ -22,7 +34,8 @@ export default function Home() {
     navigate("/play", {
       state: {
         username,
-        mode: "quick"
+        mode: "quick",
+        avatarSeed
       }
     });
   };
@@ -38,12 +51,25 @@ export default function Home() {
       <div className="card">
         <div className="setting-group">
           <label>Your Name</label>
-          <input
-            type="text"
-            placeholder="Enter Your Name"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
+          <div className="name-input-container">
+            <div className="avatar-preview" dangerouslySetInnerHTML={{ __html: avatarSvg }} />
+            <input
+              type="text"
+              placeholder="Enter Your Name"
+              value={username}
+              onChange={(e) => {
+                setUsername(e.target.value);
+                setAvatarSeed(e.target.value || Math.random().toString(36).substring(7));
+              }}
+            />
+            <button 
+              className="refresh-avatar-btn"
+              title="Random Avatar"
+              onClick={() => setAvatarSeed(Math.random().toString(36).substring(7))}
+            >
+              🔄
+            </button>
+          </div>
         </div>
 
         <button
@@ -85,7 +111,8 @@ export default function Home() {
                   state: {
                     username,
                     mode: "join_private_room",
-                    roomCode
+                    roomCode,
+                    avatarSeed
                   }
                 }
               );
@@ -191,7 +218,8 @@ export default function Home() {
                       mode: "create_private",
                       maxPlayers,
                       maxRounds,
-                      drawTime
+                      drawTime,
+                      avatarSeed
                     }
                   });
                 }}
