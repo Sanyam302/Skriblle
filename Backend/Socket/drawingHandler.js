@@ -46,7 +46,7 @@ export function registerDrawingEvents(socket) {
     .emit("draw_move", data);
 });
 
-socket.on("draw_end", () => {
+  socket.on("draw_end", () => {
 
   const room = rooms.get(socket.roomId);
 
@@ -65,4 +65,12 @@ socket.on("draw_end", () => {
     .to(room.roomId)
     .emit("draw_end");
 });
+
+  socket.on("clear_canvas", () => {
+    const room = rooms.get(socket.roomId);
+    if (!room) return;
+    const drawer = getCurrentDrawer(room);
+    if (socket.id !== drawer.socketId) return;
+    socket.to(room.roomId).emit("clear_canvas");
+  });
 }

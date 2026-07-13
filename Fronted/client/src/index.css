@@ -1,1 +1,334 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700;800&display=swap');
 
+:root {
+  /* Ultra-Premium Dark Minimalist Palette (inspired by Apple & Estonia Template) */
+  --bg-dark: #070709;
+  --bg-card: rgba(12, 12, 16, 0.85);
+  
+  --accent-white: #ffffff;
+  --accent-black: #000000;
+  
+  --accent-indigo: #818cf8;
+  --accent-purple: #c084fc;
+  
+  --accent-success: #10b981;
+  --accent-success-glow: rgba(16, 185, 129, 0.2);
+  --accent-danger: #ef4444;
+  
+  --text-primary: #f8fafc;
+  --text-muted: #64748b;
+  --text-dark: #020617;
+
+  /* Estonia-Inspired Transparent Card Theme with Prominent White Highlights */
+  --glass-bg: rgba(10, 10, 16, 0.2);
+  --glass-border: rgba(255, 255, 255, 0.16);
+  --glass-border-focus: rgba(255, 255, 255, 0.35);
+  --glass-shadow: 
+    0 30px 70px rgba(0, 0, 0, 0.6), 
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.15);
+  --glass-blur: blur(28px);
+
+  --border-radius-lg: 20px;
+  --border-radius-md: 12px;
+  --border-radius-sm: 8px;
+  
+  --transition-smooth: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--bg-dark);
+  
+  /* Minimalist Grid Pattern */
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.012) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.012) 1px, transparent 1px);
+  background-size: 32px 32px;
+  background-position: center;
+  
+  color: var(--text-primary);
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Faint ambient light glow blobs */
+body::before {
+  content: '';
+  position: fixed;
+  top: -15%;
+  left: 30%;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(129, 140, 248, 0.05) 0%, transparent 70%);
+  filter: blur(80px);
+  pointer-events: none;
+  z-index: -1;
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  bottom: -15%;
+  right: 20%;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(192, 132, 252, 0.03) 0%, transparent 70%);
+  filter: blur(80px);
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Custom Sleek Scrollbar */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* Common Animations */
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
+  }
+  50% {
+    box-shadow: 0 0 35px rgba(255, 255, 255, 0.12);
+  }
+}
+
+@keyframes popIn {
+  0% { transform: scale(0.95); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes riseFade {
+  0% { transform: translateY(20px); opacity: 0; }
+  20% { opacity: 1; }
+  100% { transform: translateY(-60px); opacity: 0; }
+}
+
+.correct-flash {
+  animation: borderFlashGreen 1.2s ease-in-out;
+}
+
+@keyframes borderFlashGreen {
+  0%, 100% { border-color: var(--glass-border); }
+  50% { border-color: var(--accent-success); box-shadow: 0 0 20px rgba(16, 185, 129, 0.15); }
+}
+
+.points-celebration {
+  position: fixed;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 10000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.celebration-badge {
+  background: var(--text-primary);
+  color: var(--text-dark);
+  padding: 14px 28px;
+  border-radius: 50px;
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5);
+  font-size: 1.1rem;
+  font-weight: 700;
+  animation: popIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.celebration-points {
+  color: var(--accent-success);
+  font-size: 2.2rem;
+  font-weight: 800;
+  text-shadow: 0 0 15px rgba(16, 185, 129, 0.4);
+  animation: riseFade 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Glossy 3D Spheres (Inspired by Glassmorphism Showcase) */
+.bg-spheres-container {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: -2;
+}
+
+.bg-sphere {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #93c5fd 0%, #3b82f6 15%, #1e3a8a 45%, #050510 80%, #000000 100%);
+  box-shadow: 
+    inset -12px -12px 36px rgba(0, 0, 0, 0.95),
+    inset 12px 12px 24px rgba(255, 255, 255, 0.25),
+    inset -4px -4px 15px rgba(129, 140, 248, 0.3),
+    0 30px 60px rgba(0, 0, 0, 0.8);
+  opacity: 0.65;
+}
+
+.sphere-1 {
+  width: 280px;
+  height: 280px;
+  top: 15%;
+  left: 8%;
+  background: radial-gradient(circle at 35% 35%, #d8b4fe 0%, #a855f7 15%, #581c87 45%, #080210 80%, #000000 100%);
+  box-shadow: 
+    inset -12px -12px 36px rgba(0, 0, 0, 0.95),
+    inset 12px 12px 24px rgba(255, 255, 255, 0.25),
+    inset -4px -4px 15px rgba(236, 72, 153, 0.3),
+    0 30px 60px rgba(0, 0, 0, 0.8);
+  animation: float-slow-1 25s infinite ease-in-out;
+}
+
+.sphere-2 {
+  width: 360px;
+  height: 360px;
+  bottom: 10%;
+  right: 5%;
+  animation: float-slow-2 30s infinite ease-in-out;
+}
+
+.sphere-3 {
+  width: 140px;
+  height: 140px;
+  bottom: 25%;
+  left: 25%;
+  background: radial-gradient(circle at 35% 35%, #a5f3fc 0%, #06b6d4 15%, #083344 45%, #010810 80%, #000000 100%);
+  box-shadow: 
+    inset -8px -8px 24px rgba(0, 0, 0, 0.95),
+    inset 8px 8px 16px rgba(255, 255, 255, 0.25),
+    inset -3px -3px 10px rgba(34, 211, 238, 0.3),
+    0 20px 40px rgba(0, 0, 0, 0.8);
+  animation: float-slow-3 20s infinite ease-in-out;
+}
+
+.sphere-4 {
+  width: 190px;
+  height: 190px;
+  top: 8%;
+  right: 28%;
+  background: radial-gradient(circle at 35% 35%, #fde047 0%, #eab308 15%, #713f12 45%, #0f0b01 80%, #000000 100%);
+  box-shadow: 
+    inset -10px -10px 30px rgba(0, 0, 0, 0.95),
+    inset 10px 10px 20px rgba(255, 255, 255, 0.25),
+    inset -4px -4px 12px rgba(234, 179, 8, 0.2),
+    0 25px 50px rgba(0, 0, 0, 0.8);
+  animation: float-slow-1 22s infinite ease-in-out reverse;
+}
+
+.sphere-5 {
+  width: 100px;
+  height: 100px;
+  top: 50%;
+  left: 55%;
+  background: radial-gradient(circle at 35% 35%, #fca5a5 0%, #ef4444 15%, #7f1d1d 45%, #100202 80%, #000000 100%);
+  box-shadow: 
+    inset -6px -6px 18px rgba(0, 0, 0, 0.95),
+    inset 6px 6px 12px rgba(255, 255, 255, 0.25),
+    0 15px 30px rgba(0, 0, 0, 0.8);
+  animation: float-slow-2 18s infinite ease-in-out reverse;
+}
+
+@keyframes float-slow-1 {
+  0%, 100% { transform: translateY(0px) translateX(0px); }
+  50% { transform: translateY(-30px) translateX(15px); }
+}
+
+@keyframes float-slow-2 {
+  0%, 100% { transform: translateY(0px) translateX(0px); }
+  50% { transform: translateY(40px) translateX(-20px); }
+}
+
+@keyframes float-slow-3 {
+  0%, 100% { transform: translateY(0px) translateX(0px); }
+  50% { transform: translateY(-20px) translateX(-20px); }
+}
+
+/* Headings Typography */
+h1, h2, h3, .logo, .countdown-number, .header-card, .winner-title, .lobby-logo h1, .modal-card h2, .word-selection h2 {
+  font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+  letter-spacing: -0.5px;
+}
+
+/* Confetti Popper Particles */
+.confetti-particle {
+  position: fixed;
+  bottom: -20px;
+  pointer-events: none;
+  z-index: 10001;
+  border-radius: 2px;
+  animation: confettiShoot 2.5s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
+}
+
+@keyframes confettiShoot {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+    opacity: 1;
+  }
+  40% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--end-x), var(--end-y)) rotate(var(--rotate-deg));
+    opacity: 0;
+  }
+}
+
+/* Countdown Screen Pulsing Animation */
+.countdown-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 40px;
+}
+
+.countdown-label {
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 3px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.countdown-number {
+  font-size: 6.5rem;
+  font-weight: 800;
+  color: var(--accent-white);
+  line-height: 1;
+  text-shadow: 0 0 35px rgba(255, 255, 255, 0.2);
+  animation: pulseScale 1s infinite ease-in-out;
+}
+
+@keyframes pulseScale {
+  0%, 100% { transform: scale(1); opacity: 0.9; }
+  50% { transform: scale(1.15); opacity: 1; text-shadow: 0 0 50px rgba(255, 255, 255, 0.35); }
+}

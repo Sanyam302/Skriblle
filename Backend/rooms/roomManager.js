@@ -72,7 +72,7 @@ export function removeUser(roomId, socketId) {
   if (!room) return;
 
   room.players = room.players.filter(
-    (id) => id !== socketId
+    (player) => player.socketId !== socketId
   );
 
   if (room.players.length === 0) {

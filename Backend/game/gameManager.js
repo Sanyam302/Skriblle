@@ -84,7 +84,7 @@ export function endRound(io, room) {
 
 export function startRoundTimer(io, room) {
 
-  const timer = setInterval(() => {
+  room.roundTimer = setInterval(() => {
 
     room.timeLeft--;
 
@@ -156,40 +156,6 @@ if (room.timeLeft ===  Math.floor(
   );
 }
 
-if (room.timeLeft ===  Math.floor(
-    room.drawTime / 2
-  )) {
-
-  room.currentHint =
-    revealLetter(
-      room.currentWord,
-      room.currentHint
-    );
-
-  room.players.forEach(
-    (player) => {
-
-      if (
-        player.socketId !==
-        room.currentDrawerId
-      ) {
-
-        io.to(
-          player.socketId
-        ).emit(
-          "word_hint",
-          {
-            hint:
-              room.currentHint
-          }
-        );
-
-      }
-
-    }
-  );
-}
-
 
 
     io.to(room.roomId).emit(
@@ -199,7 +165,8 @@ if (room.timeLeft ===  Math.floor(
 
     if (room.timeLeft <= 0) {
 
-      clearInterval(timer);
+      clearInterval(room.roundTimer);
+      room.roundTimer = null;
 
       endRound(io, room);
     }

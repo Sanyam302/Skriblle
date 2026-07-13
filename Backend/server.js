@@ -16,8 +16,10 @@ const io = new Server(server, {
 });
 startRoomTimer(io);
 socketHandler(io);
-
-
-server.listen(3000, () => {
-  console.log("Server running");
+const port=3002;
+app.get("/", (req, res) => {
+  res.send("Backend is running");
+});
+server.listen(port, () => {
+  console.log(`Server running on port ${port}`);
 });

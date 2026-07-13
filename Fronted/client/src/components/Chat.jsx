@@ -44,12 +44,13 @@ function Chat({ username }) {
       <div className="chat-messages">
         {messages.map((msg, index) => {
           const isMine = msg.user === username;
+          const isSystem = msg.user === "System";
 
           return (
             <div
               key={index}
               className={`message ${
-                isMine ? "mine" : "other"
+                isSystem ? "system-msg" : isMine ? "mine" : "other"
               }`}
             >
               <div className="message-user">

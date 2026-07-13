@@ -54,10 +54,18 @@ if (!room.currentWord) {
         room.currentDrawerIndex
       ];
 
-    // Drawer cannot guess
+    // Drawer cannot guess, but can chat
     if (
       socket.id === drawer.socketId
     ) {
+      io.to(room.roomId).emit(
+        "receive_message",
+        {
+          user: player.username,
+          text,
+          time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        }
+      );
       return;
     }
 

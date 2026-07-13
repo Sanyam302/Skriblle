@@ -23,7 +23,7 @@ function Header({
         Round: {round}/{maxRounds}
       </div>
 
-      <div className="header-card timer">
+      <div className={`header-card timer ${timeLeft <= 10 ? "urgent" : ""}`}>
         ⏳ {timeLeft}s
       </div>
 

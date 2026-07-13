@@ -32,6 +32,10 @@ export default function Play() {
   useState([]);
   const [choose_word, setChooseWord] =
   useState(null);
+  const [celebration, setCelebration] = useState(null);
+  const [isCorrectFlash, setIsCorrectFlash] = useState(false);
+  const [confetti, setConfetti] = useState([]);
+  const [now, setNow] = useState(Date.now());
 
   const location =
     useLocation();
@@ -49,6 +53,68 @@ const sortedPlayers =
 
     const mode =
   location.state?.mode;
+  useEffect(() => {
+    if (!username) {
+      navigate("/");
+    }
+  }, [username, navigate]);
+
+  useEffect(() => {
+    const handleError = (errorMsg) => {
+      alert(`Error: ${errorMsg}`);
+      navigate("/");
+    };
+    socket.on("error", handleError);
+    return () => {
+      socket.off("error", handleError);
+    };
+  }, [navigate]);
+
+  useEffect(() => {
+    if (room?.status !== "COUNTDOWN") return;
+    const interval = setInterval(() => {
+      setNow(Date.now());
+    }, 250);
+    return () => clearInterval(interval);
+  }, [room?.status]);
+
+  useEffect(() => {
+    if (!gameOverData) return;
+    const colors = ["#f43f5e", "#3b82f6", "#10b981", "#eab308", "#a855f7", "#ec4899", "#f97316"];
+    const newConfetti = [];
+    for (let i = 0; i < 75; i++) {
+      const angle = 45 + (Math.random() - 0.5) * 35;
+      const speed = 15 + Math.random() * 25;
+      const angleRad = (angle * Math.PI) / 180;
+      newConfetti.push({
+        id: `l-${i}`,
+        x: 0,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        endX: `${Math.cos(angleRad) * speed * 3.5}vw`,
+        endY: `${-Math.sin(angleRad) * speed * 3.5}vh`,
+        rotation: `${Math.random() * 360 + 720}deg`,
+        size: 8 + Math.random() * 10,
+        delay: Math.random() * 0.3
+      });
+    }
+    for (let i = 0; i < 75; i++) {
+      const angle = 135 + (Math.random() - 0.5) * 35;
+      const speed = 15 + Math.random() * 25;
+      const angleRad = (angle * Math.PI) / 180;
+      newConfetti.push({
+        id: `r-${i}`,
+        x: 100,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        endX: `${Math.cos(angleRad) * speed * 3.5}vw`,
+        endY: `${-Math.sin(angleRad) * speed * 3.5}vh`,
+        rotation: `${Math.random() * 360 + 720}deg`,
+        size: 8 + Math.random() * 10,
+        delay: Math.random() * 0.3
+      });
+    }
+    setConfetti(newConfetti);
+  }, [gameOverData]);
+
 useEffect(() => {
 
   const handleGameOver =
@@ -97,6 +163,34 @@ useEffect(() => {
   };
 
 }, []);
+
+  useEffect(() => {
+    const handleCorrectGuess = (data) => {
+      console.log("Correct Guess Received:", data);
+      setIsCorrectFlash(true);
+      setTimeout(() => setIsCorrectFlash(false), 1200);
+
+      if (data.username === username) {
+        setCelebration({
+          points: data.points,
+          message: "You guessed it!"
+        });
+        setTimeout(() => setCelebration(null), 2000);
+      } else {
+        setCelebration({
+          points: null,
+          message: `${data.username} guessed correctly!`
+        });
+        setTimeout(() => setCelebration(null), 1800);
+      }
+    };
+
+    socket.on("correct_guess", handleCorrectGuess);
+
+    return () => {
+      socket.off("correct_guess", handleCorrectGuess);
+    };
+  }, [username]);
   // Join room
   useEffect(() => {
 
@@ -288,8 +382,35 @@ console.log(
 
   return (
     <>
-    {
-  gameOverData && (
+      {confetti.map((p) => (
+        <div
+          key={p.id}
+          className="confetti-particle"
+          style={{
+            '--end-x': p.endX,
+            '--end-y': p.endY,
+            '--rotate-deg': p.rotation,
+            backgroundColor: p.color,
+            width: `${p.size}px`,
+            height: `${p.size * (Math.random() > 0.5 ? 1.5 : 1)}px`,
+            left: p.x === 0 ? '0vw' : '100vw',
+            animationDelay: `${p.delay}s`
+          }}
+        />
+      ))}
+      {celebration && (
+        <div className="points-celebration">
+          <div className="celebration-badge">
+            {celebration.points ? "🎉" : "⭐"} {celebration.message}
+          </div>
+          {celebration.points && (
+            <div className="celebration-points">
+              +{celebration.points}
+            </div>
+          )}
+        </div>
+      )}
+      {gameOverData && (
 
     <div className="game-over-overlay">
 
@@ -306,6 +427,20 @@ console.log(
         <p>
           Won the game!
         </p>
+
+        {gameOverData.leaderboard && (
+          <div className="leaderboard-summary">
+            <h3>Final Standings</h3>
+            {gameOverData.leaderboard.slice(0, 5).map((player, idx) => (
+              <div key={player.socketId} className="summary-row">
+                <span>
+                  {idx === 0 ? "👑" : `${idx + 1}.`} {player.username}
+                </span>
+                <span>{player.score} pts</span>
+              </div>
+            ))}
+          </div>
+        )}
 
        <button
        className="play-again-btn"
@@ -369,22 +504,26 @@ console.log(
 
           <Player
             players={sortedPlayers}
-
+            currentDrawerId={room?.currentDrawerId}
           />
 
         </aside>
 
-        <section className="canvas-area">
+        <section className={`canvas-area ${isCorrectFlash ? "correct-flash" : ""}`}>
 
-  {room?.status === "WAITING" && (
+  {(room?.status === "WAITING" || room?.status === "LOBBY") && (
     <div className="waiting-screen">
-      Waiting for players...
+      <h2>Lobby</h2>
+      <p>Waiting for the host to start the game...</p>
     </div>
   )}
 
   {room?.status === "COUNTDOWN" && (
-    <div className="waiting-screen">
-      Game starting soon...
+    <div className="waiting-screen countdown-screen">
+      <span className="countdown-label">Game Starting Soon</span>
+      <span className="countdown-number">
+        {room?.closeAt ? Math.max(0, Math.ceil((room.closeAt - now) / 1000)) : 5}
+      </span>
     </div>
   )}
 

@@ -4,25 +4,16 @@ import { useNavigate } from "react-router-dom";
 import "../Home.css";
 
 export default function Home() {
-  const [roomCode, setRoomCode] =
-  useState("");
-
-const [maxPlayers, setMaxPlayers] =
-  useState(8);
-
-const [maxRounds, setMaxRounds] =
-  useState(3);
-
-const [drawTime, setDrawTime] =
-  useState(60);
-
- const [username, setUsername] =
-    useState("");
+  const [roomCode, setRoomCode] = useState("");
+  const [maxPlayers, setMaxPlayers] = useState(8);
+  const [maxRounds, setMaxRounds] = useState(3);
+  const [drawTime, setDrawTime] = useState(60);
+  const [username, setUsername] = useState("");
+  const [showCreateModal, setShowCreateModal] = useState(false);
 
   const navigate = useNavigate();
 
   const handlePlay = () => {
-
     if (!username.trim()) {
       alert("Enter username");
       return;
@@ -38,158 +29,179 @@ const [drawTime, setDrawTime] =
 
   return (
     <div className="home">
+      <div className="lobby-logo">
+        <span className="live-badge">🟢 Live • Free • No Account</span>
+        <h1>scribble.io</h1>
+        <span className="logo-subtitle">Draw • Guess • Win</span>
+      </div>
+
       <div className="card">
-
-        <h1>SCRIBBLE.IO</h1>
-
-        <p>Draw • Guess • Win</p>
-
-        <input
-          type="text"
-          placeholder="Enter Your Name"
-          value={username}
-          onChange={(e) =>
-            setUsername(e.target.value)
-          }
-        />
+        <div className="setting-group">
+          <label>Your Name</label>
+          <input
+            type="text"
+            placeholder="Enter Your Name"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+        </div>
 
         <button
           className="play-btn"
           onClick={handlePlay}
         >
-          Play Now
+          ⚡ Play Now
         </button>
 
         <div className="divider">
-          Private Room
+          Private Rooms
         </div>
 
-   
-
-<div className="setting-group">
-
-  <label>
-    Room Code
-  </label>
-
-  <input
-    type="text"
-    placeholder="Enter Room Code"
-    value={roomCode}
-    onChange={(e) =>
-      setRoomCode(
-        e.target.value.toUpperCase()
-      )
-    }
-  />
-
-</div>
-
-<div className="setting-group">
-
-  <label>
-    Max Players
-  </label>
-
-  <input
-    type="number"
-    min="2"
-    max="20"
-    value={maxPlayers}
-    onChange={(e) =>
-      setMaxPlayers(
-        Number(e.target.value)
-      )
-    }
-  />
-
-</div>
-
-<div className="setting-group">
-
-  <label>
-    Number of Rounds
-  </label>
-
-  <input
-    type="number"
-    min="2"
-    max="10"
-    value={maxRounds}
-    onChange={(e) =>
-      setMaxRounds(
-        Number(e.target.value)
-      )
-    }
-  />
-
-</div>
-
-<div className="setting-group">
-
-  <label>
-    Drawing Time (seconds)
-  </label>
-
-  <input
-    type="number"
-    min="15"
-    max="240"
-    value={drawTime}
-    onChange={(e) =>
-      setDrawTime(
-        Number(e.target.value)
-      )
-    }
-  />
-
-</div>
+        <div className="setting-group">
+          <label>Sketch ID</label>
+          <input
+            type="text"
+            placeholder="Enter Room Code"
+            value={roomCode}
+            onChange={(e) => setRoomCode(e.target.value.toUpperCase())}
+          />
+        </div>
 
         <div className="room-buttons">
           <button
-  onClick={() => {
-    console.log(roomCode)
-
-    navigate(
-      "/play",
-      {
-        state: {
-          username,
-          mode:
-            "join_private_room",
-          roomCode
-        }
-      }
-    );
-
-  }}
->
-  Join Room
-</button>
-         <button
-  onClick={() => {
-
-    if (!username.trim()) {
-      alert("Enter username");
-      return;
-    }
-
-    navigate("/play", {
-  state: {
-    username,
-    mode: "create_private",
-    maxPlayers,
-    maxRounds,
-    drawTime
-  }
-});
-  }}
->
-  Create Room
-</button>
+            onClick={() => {
+              if (!username.trim()) {
+                alert("Enter username");
+                return;
+              }
+              if (!roomCode.trim()) {
+                alert("Enter Room Code");
+                return;
+              }
+              console.log(roomCode);
+              navigate(
+                "/play",
+                {
+                  state: {
+                    username,
+                    mode: "join_private_room",
+                    roomCode
+                  }
+                }
+              );
+            }}
+          >
+            ↪ Join Room
+          </button>
+          <button
+            onClick={() => {
+              if (!username.trim()) {
+                alert("Enter username");
+                return;
+              }
+              setShowCreateModal(true);
+            }}
+          >
+            ➕ Create Room
+          </button>
         </div>
-
       </div>
+
+      <div className="how-it-works">
+        <div className="step-item">
+          <span className="step-num">01</span>
+          <span className="step-title">Enter your name</span>
+          <span className="step-desc">Pick a name, configure your avatar, and get ready to draw.</span>
+        </div>
+        <div className="step-item">
+          <span className="step-num">02</span>
+          <span className="step-title">Create or join</span>
+          <span className="step-desc">Start a private sketch lobby or enter an existing code to join friends.</span>
+        </div>
+        <div className="step-item">
+          <span className="step-num">03</span>
+          <span className="step-title">Draw & guess</span>
+          <span className="step-desc">Take turns drawing custom words while others guess in real-time.</span>
+        </div>
+      </div>
+
+      <div className="features-row">
+        <span>Private Rooms</span>
+        <span>Real-Time Sync</span>
+        <span>Zero Friction</span>
+      </div>
+
+      <div className="lobby-footer">
+        <span>Built with ❤️ for WEB3TASK by Sanyam Jain</span>
+      </div>
+
+      {showCreateModal && (
+        <div className="modal-overlay">
+          <div className="modal-card">
+            <h2>Room Settings</h2>
+            <p>Configure details for your private room</p>
+
+            <div className="setting-group">
+              <label>Max Players</label>
+              <input
+                type="number"
+                min="2"
+                max="20"
+                value={maxPlayers}
+                onChange={(e) => setMaxPlayers(Number(e.target.value))}
+              />
+            </div>
+
+            <div className="setting-group">
+              <label>Number of Rounds</label>
+              <input
+                type="number"
+                min="2"
+                max="10"
+                value={maxRounds}
+                onChange={(e) => setMaxRounds(Number(e.target.value))}
+              />
+            </div>
+
+            <div className="setting-group">
+              <label>Drawing Time (seconds)</label>
+              <input
+                type="number"
+                min="15"
+                max="240"
+                value={drawTime}
+                onChange={(e) => setDrawTime(Number(e.target.value))}
+              />
+            </div>
+
+            <div className="modal-buttons">
+              <button
+                className="cancel-btn"
+                onClick={() => setShowCreateModal(false)}
+              >
+                Cancel
+              </button>
+              <button
+                className="confirm-btn"
+                onClick={() => {
+                  setShowCreateModal(false);
+                  navigate("/play", {
+                    state: {
+                      username,
+                      mode: "create_private",
+                      maxPlayers,
+                      maxRounds,
+                      drawTime
+                    }
+                  });
+                }}
+              >
+                Create & Play
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

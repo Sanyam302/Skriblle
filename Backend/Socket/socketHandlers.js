@@ -4,7 +4,7 @@ import { registerDrawingEvents } from "./drawingHandler.js"
 
 import { registerChatEvents } from "./ChatHandler.js";
 
-import { removeUser } from "../rooms/roomManager.js";
+import { removeUser, deleteRoom } from "../rooms/roomManager.js";
 
 import { startRoundTimer } from "../game/gameManager.js";
 import { registerGuessHandlers } from "../game/guessHandlers.js";
@@ -203,7 +203,7 @@ socket.on(
     socket.roomId =
       roomCode;
 
-    io.emit(
+    socket.emit(
       "room_joined",
       room
     );

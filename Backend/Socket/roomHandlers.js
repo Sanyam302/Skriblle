@@ -37,7 +37,7 @@ export function assignRoom(io,socket,username) {
 ) {
   room.timerStarted = true;
 
-  room.closeAt = Date.now() + 10000;
+  room.closeAt = Date.now() + 5000;
 
   room.status = "COUNTDOWN";
   startRoomTimer(io);
