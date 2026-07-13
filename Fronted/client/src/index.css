@@ -332,3 +332,24 @@ h1, h2, h3, .logo, .countdown-number, .header-card, .winner-title, .lobby-logo h
   0%, 100% { transform: scale(1); opacity: 0.9; }
   50% { transform: scale(1.15); opacity: 1; text-shadow: 0 0 50px rgba(255, 255, 255, 0.35); }
 }
+
+/* Mobile responsive background spheres scaling */
+@media (max-width: 768px) {
+  .sphere-1 {
+    width: 110px;
+    height: 110px;
+    top: 5%;
+    left: 3%;
+  }
+  .sphere-2 {
+    width: 140px;
+    height: 140px;
+    bottom: 5%;
+    right: 3%;
+  }
+  .sphere-3,
+  .sphere-4,
+  .sphere-5 {
+    display: none !important;
+  }
+}
