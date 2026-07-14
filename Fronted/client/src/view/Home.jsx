@@ -168,37 +168,62 @@ export default function Home() {
             <h2>Room Settings</h2>
             <p>Configure details for your private room</p>
 
-            <div className="setting-group">
-              <label>Max Players</label>
+            <div className="slider-group">
+              <div className="slider-header">
+                <label>Max Players</label>
+                <span className="slider-value">{maxPlayers}</span>
+              </div>
               <input
-                type="number"
+                type="range"
+                className="custom-range-slider"
                 min="2"
                 max="20"
                 value={maxPlayers}
                 onChange={(e) => setMaxPlayers(Number(e.target.value))}
               />
+              <div className="slider-limits">
+                <span>2</span>
+                <span>20</span>
+              </div>
             </div>
 
-            <div className="setting-group">
-              <label>Number of Rounds</label>
+            <div className="slider-group">
+              <div className="slider-header">
+                <label>Number of Rounds</label>
+                <span className="slider-value">{maxRounds}</span>
+              </div>
               <input
-                type="number"
+                type="range"
+                className="custom-range-slider"
                 min="2"
                 max="10"
                 value={maxRounds}
                 onChange={(e) => setMaxRounds(Number(e.target.value))}
               />
+              <div className="slider-limits">
+                <span>2</span>
+                <span>10</span>
+              </div>
             </div>
 
-            <div className="setting-group">
-              <label>Drawing Time (seconds)</label>
+            <div className="slider-group">
+              <div className="slider-header">
+                <label>Drawing Time</label>
+                <span className="slider-value">{drawTime}s</span>
+              </div>
               <input
-                type="number"
+                type="range"
+                className="custom-range-slider"
                 min="15"
                 max="240"
+                step="5"
                 value={drawTime}
                 onChange={(e) => setDrawTime(Number(e.target.value))}
               />
+              <div className="slider-limits">
+                <span>15s</span>
+                <span>240s</span>
+              </div>
             </div>
 
             <div className="modal-buttons">

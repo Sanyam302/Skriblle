@@ -528,7 +528,11 @@ console.log(
   {(room?.status === "WAITING" || room?.status === "LOBBY") && (
     <div className="waiting-screen">
       <h2>Lobby</h2>
-      <p>Waiting for the host to start the game...</p>
+      <p>
+        {room?.isPrivate
+          ? "Waiting for the host to start the game..."
+          : "Waiting for players..."}
+      </p>
     </div>
   )}
 
